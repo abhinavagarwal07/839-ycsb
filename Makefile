@@ -41,6 +41,9 @@ ifeq ($(BIND_LMDB), 1)
 	SOURCES += $(wildcard lmdb/*.cc)
 endif
 
+
+SOURCES += $(wildcard mydb/*.cpp)
+
 CXXFLAGS += -std=c++11 -Wall -pthread $(EXTRA_CXXFLAGS) -I./
 LDFLAGS += $(EXTRA_LDFLAGS) -lpthread
 SOURCES += $(wildcard core/*.cc)
@@ -51,15 +54,15 @@ EXEC = ycsb
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	@$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+	g++ $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 	@echo "  LD      " $@
 
 .cc.o:
-	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+	g++ $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 	@echo "  CC      " $@
 
 %.d : %.cc
-	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -MM -MT '$(<:.cc=.o)' -o $@ $<
+	g++ $(CXXFLAGS) $(CPPFLAGS) -MM -MT '$(<:.cc=.o)' -o $@ $<
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
